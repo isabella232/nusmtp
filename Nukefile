@@ -16,6 +16,8 @@
 (set @framework "NuSMTP")
 (set @framework_identifier   "nu.programming.smtp")
 (set @framework_creator_code "????")
+(set @arch (list "x86_64" "i386"))
+
 
 (set @cflags "-g -fobjc-gc -std=gnu99 -I Source")
 

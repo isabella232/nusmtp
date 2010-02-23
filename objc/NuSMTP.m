@@ -12,6 +12,7 @@
 @interface NuSMTPMessage : NSObject <SKPSMTPMessageDelegate>
 {
     SKPSMTPMessage* msg;
+    int completed;
 }
 
 - (id) initWithFromEmail:(NSString*)fromEmail
@@ -42,6 +43,8 @@
 	
     if (self)
     {
+        completed = NO;
+       
         msg = [[SKPSMTPMessage alloc] init];
         
         msg.fromEmail = fromEmail;
@@ -97,7 +100,11 @@
 // Delegate methods
 - (void)messageSent:(SKPSMTPMessage *)message
 {
+    assert(msg == message);
     [message release];
+    msg = nil;
+    
+    completed = YES;
     
     NSLog(@"delegate - message sent");
 }
@@ -105,6 +112,8 @@
 - (void)messageFailed:(SKPSMTPMessage *)message error:(NSError *)error
 {
     [message release];
+    assert(msg == message);
+    msg = nil;
     
     NSLog(@"delegate - error(%d): %@", [error code], [error localizedDescription]);
 }
@@ -142,6 +151,15 @@
 - (int) send
 {
 	return [msg send];
+}
+
+- (int) sendSynchronously 
+{
+   [msg send];
+   while (msg) {
+      [[NSRunLoop mainRunLoop] runUntilDate:[NSDate distantPast]];
+   }
+   return completed;
 }
 
 @end

@@ -4,6 +4,9 @@
 (set @nu_files 	  (filelist "^nu/.*nu$"))
 (set @resources   (filelist "^resources/rule30.jpg$"))
 
+(set @arch (list "x86_64" "i386"))
+
+
 ;; application description
 (set @application 	       	   "SMTPTestApp")
 (set @application_identifier   "nu.programming.SMTPTestApp")
